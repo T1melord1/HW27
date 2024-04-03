@@ -6,37 +6,34 @@ import java.util.Scanner;
 public class Main {
     private static final String CORRECT_CREDENTIALS = "[\\w_]+";
 
-    public static void main(String[] args) throws WrongLoginException, WrongPasswordException {
+    public static void main(String[] args) {
         //todo Тут протестить работу метода
-        System.out.println("Введите ваш логин: ");
-        String login = new Scanner(System.in).nextLine();
-        System.out.println("Введите ваш пароль: ");
-        String password = new Scanner(System.in).nextLine();
-        System.out.println("Введите ваш пароль ещё раз для проверки: ");
-        String confirmPassword = new Scanner(System.in).nextLine();
-        checkPasswd(login, password, confirmPassword);
+        try {
+            System.out.println(checkPasswd("vladb20", "password1", "password"));
+        } catch (WrongLoginException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongPasswordException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
     //todo тут создать метод confirmPassword()
 
-    public static void checkPasswd(String login,
-                                   String password,
-                                   String confirmPassword)
+    public static boolean checkPasswd(String login,
+                                      String password,
+                                      String confirmPassword)
             throws WrongLoginException, WrongPasswordException {
         if (checkCorrection(login)) {
-            System.out.println("Ваш логин: " + login);
-        } else {
             throw new WrongLoginException("Неправильный логин");
         }
-        if (checkCorrection(password) && password.equals(confirmPassword)) {
-            System.out.println("Ваш пароль: " + password);
-        } else {
+        if (checkCorrection(password)) {
             throw new WrongPasswordException("Неправильный пароль");
         }
-
+        return password.equals(confirmPassword);
     }
-    public static boolean checkCorrection(String correction){
-        return correction.matches(CORRECT_CREDENTIALS) && correction.length() < 20;
+
+    public static boolean checkCorrection(String correction) {
+        return !correction.matches(CORRECT_CREDENTIALS) || correction.length() > 20;
     }
 }
