@@ -10,9 +10,7 @@ public class Main {
         //todo Тут протестить работу метода
         try {
             System.out.println(checkPasswd("vladb20", "password1", "password"));
-        } catch (WrongLoginException e) {
-            System.out.println(e.getMessage());
-        } catch (WrongPasswordException e) {
+        } catch (WrongLoginException | WrongPasswordException e) {
             System.out.println(e.getMessage());
         }
 
